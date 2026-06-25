@@ -198,8 +198,8 @@ Has `state`, `mode` (`auto`/`manual`/`time`), `action` (`start`/`pause`),
 
 ```java
 Bridge catlink:account:home "CatLink Account" [ email="you@example.com", password="secret", region="global", refreshInterval=60 ] {
-    Thing c08 box   "Litter Box" [ deviceId="5843873" ]
-    Thing cat genyo "Genyo"      [ petId="256809" ]
+    Thing c08 box   "Litter Box" [ deviceId="1234567" ]
+    Thing cat genyo "Genyo"      [ petId="7654321" ]
 }
 ```
 
