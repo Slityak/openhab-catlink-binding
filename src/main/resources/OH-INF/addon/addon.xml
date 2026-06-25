@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon:addon id="catlink" xmlns:addon="https://openhab.org/schemas/addon/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://openhab.org/schemas/addon/v1.0.0 https://openhab.org/schemas/addon-1.0.0.xsd">
+
+	<type>binding</type>
+	<name>CatLink Binding</name>
+	<description>Integrates CatLink litter boxes (Scooper, C1, Open-X / Young Pro, Pro Ultra), feeders, PurePro fountains
+		and per-cat health via the CatLink cloud.</description>
+	<connection>cloud</connection>
+
+</addon:addon>

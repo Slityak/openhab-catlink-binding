@@ -1,0 +1,20 @@
+This content is produced and maintained by the openHAB project.
+
+* Project home: https://www.openhab.org
+
+== Declared Project Licenses
+
+This program and the accompanying materials are made available under the terms
+of the Eclipse Public License 2.0 which is available at
+https://www.eclipse.org/legal/epl-2.0/.
+
+== Source Code
+
+https://github.com/openhab/openhab-addons
+
+== Third-party Content
+
+This binding talks to the CatLink cloud API. CatLink is a trademark of its
+respective owner. This is an independent, unofficial integration; the cloud
+protocol was derived from the community Home Assistant integration
+(https://github.com/hasscc/catlink).

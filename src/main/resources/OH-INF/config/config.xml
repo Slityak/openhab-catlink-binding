@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config-description:config-descriptions
+	xmlns:config-description="https://openhab.org/schemas/config-description/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://openhab.org/schemas/config-description/v1.0.0 https://openhab.org/schemas/config-description-1.0.0.xsd">
+
+	<!-- Shared config for all CatLink device things (litter boxes, feeder, fountain). -->
+	<config-description uri="thing-type:catlink:device">
+		<parameter name="deviceId" type="text" required="true">
+			<label>Device ID</label>
+			<description>The CatLink device id (filled in automatically by discovery).</description>
+		</parameter>
+		<parameter name="deviceType" type="text">
+			<label>Device Type</label>
+			<description>The CatLink device type string (filled in automatically by discovery).</description>
+		</parameter>
+	</config-description>
+
+</config-description:config-descriptions>

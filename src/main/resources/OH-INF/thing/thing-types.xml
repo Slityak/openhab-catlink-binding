@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="catlink"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<!-- ============================ Account (bridge) ============================ -->
+	<bridge-type id="account">
+		<label>CatLink Account</label>
+		<description>A CatLink cloud account. Use a dedicated shared (sub-)account, since the cloud allows only one active
+			session per account.</description>
+		<config-description>
+			<parameter name="email" type="text" required="false">
+				<label>Email</label>
+				<description>The account's email address. Use this OR the phone number, matching how you log into the CatLink app.</description>
+			</parameter>
+			<parameter name="phone" type="text" required="false">
+				<label>Phone Number</label>
+				<description>The account's phone number (without the international prefix). Leave empty if logging in with email.</description>
+			</parameter>
+			<parameter name="phoneIac" type="text" required="false">
+				<label>International Calling Code</label>
+				<description>Country dial prefix for phone login, e.g. 86, 36, 1.</description>
+				<default>86</default>
+			</parameter>
+			<parameter name="password" type="text" required="true">
+				<label>Password</label>
+				<context>password</context>
+				<description>The account password (entered in plain text; encrypted before transmission).</description>
+			</parameter>
+			<parameter name="region" type="text" required="true">
+				<label>Region</label>
+				<description>Which CatLink server to use.</description>
+				<options>
+					<option value="global">Global</option>
+					<option value="usa">USA</option>
+					<option value="singapore">Singapore</option>
+					<option value="china">China</option>
+				</options>
+				<default>global</default>
+				<limitToOptions>true</limitToOptions>
+			</parameter>
+			<parameter name="language" type="text">
+				<label>Language</label>
+				<description>Language header sent to the API, e.g. en_US.</description>
+				<default>en_US</default>
+			</parameter>
+			<parameter name="refreshInterval" type="integer" unit="s" min="15">
+				<label>Refresh Interval</label>
+				<description>How often (seconds) to poll device state.</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+	<!-- ============================ Scooper (generic) ============================ -->
+	<thing-type id="scooper">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink Scooper</label>
+		<description>A CatLink self-cleaning litter box (generic Scooper).</description>
+		<channels>
+			<channel id="state" typeId="state"/>
+			<channel id="mode" typeId="mode-scooper"/>
+			<channel id="action" typeId="action-litterbox"/>
+			<channel id="litter-weight" typeId="litter-weight"/>
+			<channel id="litter-remaining-days" typeId="litter-remaining-days"/>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="humidity" typeId="humidity"/>
+			<channel id="total-clean-time" typeId="total-clean-time"/>
+			<channel id="manual-clean-time" typeId="manual-clean-time"/>
+			<channel id="deodorant-countdown" typeId="deodorant-countdown"/>
+			<channel id="key-lock" typeId="key-lock"/>
+			<channel id="online" typeId="online"/>
+			<channel id="last-log" typeId="last-log"/>
+			<channel id="alarm" typeId="alarm"/>
+			<channel id="error" typeId="error"/>
+		</channels>
+		<representation-property>deviceId</representation-property>
+		<config-description-ref uri="thing-type:catlink:device"/>
+	</thing-type>
+
+	<!-- ============================ Litter Box (LITTER_BOX_599 / C1) ============================ -->
+	<thing-type id="litterbox">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink Litter Box (C1)</label>
+		<description>A CatLink LITTER_BOX_599 (Scooper C1) litter box.</description>
+		<channels>
+			<channel id="state" typeId="state"/>
+			<channel id="mode" typeId="mode-litterbox"/>
+			<channel id="action" typeId="action-litterbox"/>
+			<channel id="litter-weight" typeId="litter-weight"/>
+			<channel id="litter-remaining-days" typeId="litter-remaining-days"/>
+			<channel id="total-clean-time" typeId="total-clean-time"/>
+			<channel id="manual-clean-time" typeId="manual-clean-time"/>
+			<channel id="deodorant-countdown" typeId="deodorant-countdown"/>
+			<channel id="key-lock" typeId="key-lock"/>
+			<channel id="online" typeId="online"/>
+			<channel id="last-log" typeId="last-log"/>
+			<channel id="garbage-status" typeId="garbage-status"/>
+			<channel id="box-full-sensitivity" typeId="box-full-sensitivity"/>
+			<channel id="replace-garbage-bag" typeId="switch-rw">
+				<label>Replace Garbage Bag</label>
+			</channel>
+			<channel id="reset-litter" typeId="switch-rw">
+				<label>Reset Litter</label>
+			</channel>
+			<channel id="reset-deodorant" typeId="switch-rw">
+				<label>Reset Deodorant</label>
+			</channel>
+			<channel id="alarm" typeId="alarm"/>
+			<channel id="error" typeId="error"/>
+		</channels>
+		<representation-property>deviceId</representation-property>
+		<config-description-ref uri="thing-type:catlink:device"/>
+	</thing-type>
+
+	<!-- ============================ C08 (Open-X / Young Pro) ============================ -->
+	<thing-type id="c08">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink Open-X / Young Pro (C08)</label>
+		<description>A CatLink C08 litter box (Open-X / Young Pro) with full feature support.</description>
+		<channels>
+			<channel id="state" typeId="state"/>
+			<channel id="mode" typeId="mode-c08"/>
+			<channel id="action" typeId="action-c08"/>
+			<channel id="litter-weight" typeId="litter-weight"/>
+			<channel id="litter-remaining-days" typeId="litter-remaining-days"/>
+			<channel id="total-clean-time" typeId="total-clean-time"/>
+			<channel id="manual-clean-time" typeId="manual-clean-time"/>
+			<channel id="deodorant-countdown" typeId="deodorant-countdown"/>
+			<channel id="online" typeId="online"/>
+			<channel id="last-log" typeId="last-log"/>
+			<channel id="error" typeId="error"/>
+			<channel id="litter-type" typeId="litter-type"/>
+			<channel id="safe-time" typeId="safe-time"/>
+			<channel id="quiet-mode" typeId="switch-rw">
+				<label>Quiet Mode</label>
+			</channel>
+			<channel id="auto-burial" typeId="switch-rw">
+				<label>Auto Burial</label>
+			</channel>
+			<channel id="continuous-cleaning" typeId="switch-rw">
+				<label>Continuous Cleaning</label>
+			</channel>
+			<channel id="child-lock" typeId="switch-rw">
+				<label>Child Lock</label>
+			</channel>
+			<channel id="indicator-light" typeId="switch-rw">
+				<label>Indicator Light</label>
+			</channel>
+			<channel id="keypad-tone" typeId="switch-rw">
+				<label>Keypad Tone</label>
+			</channel>
+			<channel id="auto-pet-weight" typeId="switch-rw">
+				<label>Auto Pet Weight Update</label>
+			</channel>
+			<channel id="kitten-mode" typeId="switch-rw">
+				<label>Kitten Mode</label>
+			</channel>
+			<channel id="wifi-rssi" typeId="wifi-rssi"/>
+			<channel id="wifi-ssid" typeId="wifi-ssid"/>
+			<channel id="stats-times" typeId="ro-number">
+				<label>Stats: Clean Times</label>
+			</channel>
+			<channel id="stats-weight-avg" typeId="ro-number">
+				<label>Stats: Avg Weight</label>
+			</channel>
+			<channel id="stats-duration-avg" typeId="ro-number">
+				<label>Stats: Avg Duration</label>
+			</channel>
+			<channel id="notice-cat-came" typeId="switch-rw">
+				<label>Notify: Cat Came</label>
+			</channel>
+			<channel id="notice-box-full" typeId="switch-rw">
+				<label>Notify: Box Full</label>
+			</channel>
+			<channel id="notice-replace-garbage-bag" typeId="switch-rw">
+				<label>Notify: Replace Garbage Bag</label>
+			</channel>
+			<channel id="notice-wash-scooper" typeId="switch-rw">
+				<label>Notify: Wash Scooper</label>
+			</channel>
+			<channel id="notice-replace-deodorant" typeId="switch-rw">
+				<label>Notify: Replace Deodorant</label>
+			</channel>
+			<channel id="notice-litter-not-enough" typeId="switch-rw">
+				<label>Notify: Litter Not Enough</label>
+			</channel>
+			<channel id="notice-sandbox-not-enough" typeId="switch-rw">
+				<label>Notify: Sandbox Not Enough</label>
+			</channel>
+			<channel id="notice-anti-pinch" typeId="switch-rw">
+				<label>Notify: Anti Pinch</label>
+			</channel>
+			<channel id="notice-firmware-updated" typeId="switch-rw">
+				<label>Notify: Firmware Updated</label>
+			</channel>
+		</channels>
+		<representation-property>deviceId</representation-property>
+		<config-description-ref uri="thing-type:catlink:device"/>
+	</thing-type>
+
+	<!-- ============================ Pro Ultra (VISUAL_PRO_ULTRA) ============================ -->
+	<thing-type id="proultra">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink Scooper Pro Ultra</label>
+		<description>A CatLink VISUAL_PRO_ULTRA (Scooper Pro Ultra). Limited, read-only support.</description>
+		<channels>
+			<channel id="state" typeId="state"/>
+			<channel id="litter-remaining-days" typeId="litter-remaining-days"/>
+			<channel id="deodorant-countdown" typeId="deodorant-countdown"/>
+			<channel id="total-clean-time" typeId="total-clean-time"/>
+			<channel id="online" typeId="online"/>
+		</channels>
+		<representation-property>deviceId</representation-property>
+		<config-description-ref uri="thing-type:catlink:device"/>
+	</thing-type>
+
+	<!-- ============================ Feeder ============================ -->
+	<thing-type id="feeder">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink Feeder</label>
+		<description>A CatLink automatic feeder.</description>
+		<channels>
+			<channel id="state" typeId="state">
+				<label>Food-Out Status</label>
+			</channel>
+			<channel id="portions" typeId="portions"/>
+			<channel id="feed" typeId="switch-rw">
+				<label>Feed</label>
+			</channel>
+			<channel id="weight" typeId="weight"/>
+			<channel id="auto-fill" typeId="ro-string">
+				<label>Auto Fill Status</label>
+			</channel>
+			<channel id="indicator-light-status" typeId="ro-string">
+				<label>Indicator Light Status</label>
+			</channel>
+			<channel id="breath-light-status" typeId="ro-string">
+				<label>Breath Light Status</label>
+			</channel>
+			<channel id="power-supply-status" typeId="ro-string">
+				<label>Power Supply Status</label>
+			</channel>
+			<channel id="key-lock" typeId="key-lock"/>
+			<channel id="online" typeId="online"/>
+			<channel id="last-log" typeId="last-log"/>
+			<channel id="error" typeId="error"/>
+		</channels>
+		<representation-property>deviceId</representation-property>
+		<config-description-ref uri="thing-type:catlink:device"/>
+	</thing-type>
+
+	<!-- ============================ PurePro fountain ============================ -->
+	<thing-type id="purepro">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink PurePro Fountain</label>
+		<description>A CatLink PurePro water fountain.</description>
+		<channels>
+			<channel id="state" typeId="state"/>
+			<channel id="mode" typeId="mode-purepro"/>
+			<channel id="water-level" typeId="percent">
+				<label>Water Level</label>
+			</channel>
+			<channel id="filter-life" typeId="percent">
+				<label>Filter Life</label>
+			</channel>
+			<channel id="temperature" typeId="temperature">
+				<label>Water Temperature</label>
+			</channel>
+			<channel id="uv-active" typeId="ro-switch">
+				<label>UV Sterilization</label>
+			</channel>
+			<channel id="heating" typeId="ro-switch">
+				<label>Water Heating</label>
+			</channel>
+			<channel id="light-active" typeId="ro-switch">
+				<label>Light</label>
+			</channel>
+			<channel id="hair-cleaning" typeId="ro-switch">
+				<label>Hair Cleaning</label>
+			</channel>
+			<channel id="online" typeId="online"/>
+			<channel id="last-log" typeId="last-log"/>
+		</channels>
+		<representation-property>deviceId</representation-property>
+		<config-description-ref uri="thing-type:catlink:device"/>
+	</thing-type>
+
+	<!-- ============================ Cat (per-cat health) ============================ -->
+	<thing-type id="cat">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>CatLink Cat</label>
+		<description>A cat's health profile and daily statistics from the CatLink cloud.</description>
+		<channels>
+			<channel id="status" typeId="ro-string">
+				<label>Status</label>
+			</channel>
+			<channel id="weight" typeId="weight">
+				<label>Weight</label>
+			</channel>
+			<channel id="age-years" typeId="ro-number">
+				<label>Age (Years)</label>
+			</channel>
+			<channel id="age-months" typeId="ro-number">
+				<label>Age (Months)</label>
+			</channel>
+			<channel id="gender" typeId="ro-string">
+				<label>Gender</label>
+			</channel>
+			<channel id="breed" typeId="ro-string">
+				<label>Breed</label>
+			</channel>
+			<channel id="toilet-times" typeId="ro-number">
+				<label>Toilet Times</label>
+			</channel>
+			<channel id="toilet-weight-avg" typeId="ro-number">
+				<label>Measured Weight (kg)</label>
+				<description>The cat's average weight (kg) measured by the litter box during toilet visits. Equals the registered
+					weight until visit data is collected.</description>
+			</channel>
+			<channel id="pee-times" typeId="ro-number">
+				<label>Pee Times</label>
+			</channel>
+			<channel id="poo-times" typeId="ro-number">
+				<label>Poo Times</label>
+			</channel>
+			<channel id="drink-times" typeId="ro-number">
+				<label>Drink Times</label>
+			</channel>
+			<channel id="diet-times" typeId="ro-number">
+				<label>Diet Times</label>
+			</channel>
+			<channel id="diet-intakes" typeId="ro-number">
+				<label>Diet Intakes</label>
+			</channel>
+			<channel id="sport-duration" typeId="ro-number">
+				<label>Active Duration</label>
+			</channel>
+		</channels>
+		<representation-property>petId</representation-property>
+		<config-description>
+			<parameter name="petId" type="text" required="true">
+				<label>Pet ID</label>
+				<description>The CatLink pet id (filled in automatically by discovery).</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<!-- ============================ Channel types ============================ -->
+	<channel-type id="state">
+		<item-type>String</item-type>
+		<label>Work Status</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="mode-scooper">
+		<item-type>String</item-type>
+		<label>Mode</label>
+		<description>Cleaning mode.</description>
+		<state>
+			<options>
+				<option value="auto">Auto</option>
+				<option value="manual">Manual</option>
+				<option value="time">Time</option>
+				<option value="empty">Empty</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="mode-litterbox">
+		<item-type>String</item-type>
+		<label>Mode</label>
+		<description>Cleaning mode.</description>
+		<state>
+			<options>
+				<option value="auto">Auto</option>
+				<option value="manual">Manual</option>
+				<option value="time">Time</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="mode-c08">
+		<item-type>String</item-type>
+		<label>Mode</label>
+		<description>Cleaning mode.</description>
+		<state>
+			<options>
+				<option value="auto">Auto</option>
+				<option value="manual">Manual</option>
+				<option value="scheduled">Scheduled</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="mode-purepro">
+		<item-type>String</item-type>
+		<label>Mode</label>
+		<description>Fountain run mode.</description>
+		<state>
+			<options>
+				<option value="flowing">Flowing</option>
+				<option value="eco">Eco</option>
+				<option value="smart">Smart</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="action-litterbox">
+		<item-type>String</item-type>
+		<label>Action</label>
+		<description>Start or pause cleaning.</description>
+		<command>
+			<options>
+				<option value="start">Start</option>
+				<option value="pause">Pause</option>
+			</options>
+		</command>
+	</channel-type>
+
+	<channel-type id="action-c08">
+		<item-type>String</item-type>
+		<label>Action</label>
+		<description>Clean / pave control.</description>
+		<command>
+			<options>
+				<option value="clean-start">Clean: Start</option>
+				<option value="clean-pause">Clean: Pause</option>
+				<option value="clean-cancel">Clean: Cancel</option>
+				<option value="pave-start">Pave: Start</option>
+				<option value="pave-pause">Pave: Pause</option>
+			</options>
+		</command>
+	</channel-type>
+
+	<channel-type id="litter-type">
+		<item-type>String</item-type>
+		<label>Litter Type</label>
+		<state>
+			<options>
+				<option value="bentonite">Bentonite</option>
+				<option value="mixed">Mixed</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="safe-time">
+		<item-type>String</item-type>
+		<label>Safe Time (min)</label>
+		<state>
+			<options>
+				<option value="1">1</option>
+				<option value="3">3</option>
+				<option value="5">5</option>
+				<option value="7">7</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="30">30</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="box-full-sensitivity">
+		<item-type>String</item-type>
+		<label>Box Full Sensitivity</label>
+		<state>
+			<options>
+				<option value="1">Level 1</option>
+				<option value="2">Level 2</option>
+				<option value="3">Level 3</option>
+				<option value="4">Level 4</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="litter-weight">
+		<item-type>Number</item-type>
+		<label>Litter Weight</label>
+		<state readOnly="true" pattern="%.1f kg"/>
+	</channel-type>
+
+	<channel-type id="litter-remaining-days">
+		<item-type>Number</item-type>
+		<label>Litter Remaining Days</label>
+		<state readOnly="true" pattern="%.0f days"/>
+	</channel-type>
+
+	<channel-type id="temperature">
+		<item-type>Number:Temperature</item-type>
+		<label>Temperature</label>
+		<category>Temperature</category>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="humidity">
+		<item-type>Number:Dimensionless</item-type>
+		<label>Humidity</label>
+		<category>Humidity</category>
+		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+	<channel-type id="percent">
+		<item-type>Number:Dimensionless</item-type>
+		<label>Level</label>
+		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+	<channel-type id="weight">
+		<item-type>Number:Mass</item-type>
+		<label>Weight</label>
+		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+	<channel-type id="total-clean-time">
+		<item-type>Number</item-type>
+		<label>Total Clean Count</label>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="manual-clean-time">
+		<item-type>Number</item-type>
+		<label>Manual Clean Count</label>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="deodorant-countdown">
+		<item-type>Number</item-type>
+		<label>Deodorant Countdown</label>
+		<state readOnly="true" pattern="%.0f days"/>
+	</channel-type>
+
+	<channel-type id="wifi-rssi">
+		<item-type>Number</item-type>
+		<label>Wi-Fi RSSI</label>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="wifi-ssid">
+		<item-type>String</item-type>
+		<label>Wi-Fi SSID</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="portions">
+		<item-type>Number</item-type>
+		<label>Portions</label>
+		<description>Number of portions to dispense on Feed.</description>
+		<state min="1" max="10" step="1" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="key-lock">
+		<item-type>Switch</item-type>
+		<label>Key Lock</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="online">
+		<item-type>Switch</item-type>
+		<label>Online</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="alarm">
+		<item-type>String</item-type>
+		<label>Alarm Status</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="error">
+		<item-type>String</item-type>
+		<label>Error Message</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="last-log">
+		<item-type>String</item-type>
+		<label>Last Event</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="garbage-status">
+		<item-type>String</item-type>
+		<label>Garbage Status</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<!-- Generic reusable types (label overridden per channel) -->
+	<channel-type id="ro-string">
+		<item-type>String</item-type>
+		<label>Value</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="ro-number">
+		<item-type>Number</item-type>
+		<label>Value</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="ro-switch">
+		<item-type>Switch</item-type>
+		<label>State</label>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="switch-rw">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+	</channel-type>
+
+</thing:thing-descriptions>
