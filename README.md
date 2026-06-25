@@ -12,8 +12,9 @@ trademark of its respective owner.
 
 ## Installation
 
-Grab `org.openhab.binding.catlink-<version>.jar` from `dist/` (or a release) and
-drop it into your openHAB `addons/` folder.
+Download `org.openhab.binding.catlink-<version>.jar` from the
+[latest release](https://github.com/Slityak/openhab-catlink-binding/releases/latest)
+and drop it into your openHAB `addons/` folder.
 
 To build from source, clone the [openHAB add-ons](https://github.com/openhab/openhab-addons)
 repository, place this module under `bundles/org.openhab.binding.catlink`, add it
